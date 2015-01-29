@@ -10,6 +10,7 @@
 #import "YelpClient.h"
 #import "Business.h"
 #import "BusinessCell.h"
+#import "FilterUIViewController.h"
 
 //NSString * const kYelpConsumerKey = @"vxKwwcR_NMQ7WaEiQBK_CA";
 //NSString * const kYelpConsumerSecret = @"33QCvh5bIF5jIHR5klQr7RtBDhQ";
@@ -21,11 +22,13 @@ NSString * const kYelpConsumerSecret = @"7zJYu2HH3pwoBzhC2jzYc4REsz0";
 NSString * const kYelpToken = @"BGwL_k-sXGr1vru5ZjmzUKOGuhqEiNoB";
 NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, FilterUIViewControllerDelegate>
 
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSArray *businesses;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic, strong) BusinessCell *dummyCell;
 
 @end
 
@@ -64,6 +67,30 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 
     self.title = @"Yelp";
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
+
+//    UISearchBar *searchBar = [UISearchBar new];
+//    searchBar.barTintColor = [UIColor colorWithRed:255.0 / 255.0 green:0.0 / 255.0 blue:0.0 / 255.0 alpha:1];
+//    [searchBar sizeToFit];
+//    UIView *barWrapper = [[UIView alloc]initWithFrame:searchBar.bounds];
+//    [barWrapper addSubview:searchBar];
+//    self.navigationItem.titleView = barWrapper;
+}
+
+- (void)onFilterButton {
+
+    FilterUIViewController *vc = [[FilterUIViewController alloc] init];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+
+    [self presentViewController:nvc animated:YES completion:nil];
+
+}
+
+- (void)filterViewController:(FilterUIViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
+
+    NSLog(@"Fire a network event here");
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -77,6 +104,34 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     cell.business = self.businesses[indexPath.row];
 
     return cell;
+}
+
+
+- (BusinessCell *)dummyCell {
+
+    if (!_dummyCell) {
+        _dummyCell = [self.tableView dequeueReusableCellWithIdentifier:@"BusinessCell"];
+    }
+    return _dummyCell;
+
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self configureCell:self.dummyCell forRowAtIndexPath:indexPath];
+    [self.dummyCell layoutIfNeeded];
+
+    CGSize size = [self.dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return size.height+1;
+}
+
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[BusinessCell class]])
+    {
+        BusinessCell *textCell = (BusinessCell *)cell;
+        textCell.business = self.businesses[indexPath.row];
+    }
 }
 
 - (void)didReceiveMemoryWarning
