@@ -22,13 +22,14 @@ NSString * const kYelpConsumerSecret = @"7zJYu2HH3pwoBzhC2jzYc4REsz0";
 NSString * const kYelpToken = @"BGwL_k-sXGr1vru5ZjmzUKOGuhqEiNoB";
 NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, FilterUIViewControllerDelegate>
+@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, FilterUIViewControllerDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSArray *businesses;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) BusinessCell *dummyCell;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 - (void) fetchBusinessesWithQuery: (NSString *) query params:(NSDictionary *) params;
 
@@ -60,13 +61,22 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     self.title = @"Yelp";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(onSearchButton)];
 
-//    UISearchBar *searchBar = [UISearchBar new];
-//    searchBar.barTintColor = [UIColor colorWithRed:255.0 / 255.0 green:0.0 / 255.0 blue:0.0 / 255.0 alpha:1];
-//    [searchBar sizeToFit];
-//    UIView *barWrapper = [[UIView alloc]initWithFrame:searchBar.bounds];
-//    [barWrapper addSubview:searchBar];
-//    self.navigationItem.titleView = barWrapper;
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
+
+    self.searchBar = [UISearchBar new];
+    self.searchBar.barTintColor = [UIColor colorWithRed:255.0 / 255.0 green:0.0 / 255.0 blue:0.0 / 255.0 alpha:1];
+    [self.searchBar sizeToFit];
+    self.navigationItem.titleView = self.searchBar;
+
+    self.searchBar.delegate = self;
+}
+
+- (void)onSearchButton {
+    [self fetchBusinessesWithQuery:self.searchBar.text params:nil];
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)onFilterButton {
