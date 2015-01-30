@@ -35,7 +35,7 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5H-1t-gVD">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5H-1t-gVD">
                         <rect key="frame" x="329" y="26" width="12" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -75,6 +75,7 @@
                     <constraint firstItem="lq3-4f-YcC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="EMR-uz-fnK"/>
                     <constraint firstItem="nkm-5L-YPV" firstAttribute="top" secondItem="1XS-Gz-Yw2" secondAttribute="bottom" constant="2" id="GYP-QU-W28"/>
                     <constraint firstItem="QFp-ST-LmS" firstAttribute="top" secondItem="nkm-5L-YPV" secondAttribute="bottom" constant="5" id="H0z-nh-BXR"/>
+                    <constraint firstItem="m5H-1t-gVD" firstAttribute="top" secondItem="lq3-4f-YcC" secondAttribute="bottom" constant="6" id="J7a-u1-UyC"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="U3q-C2-3gf" secondAttribute="bottom" constant="8" id="LKJ-Zc-MMB"/>
                     <constraint firstItem="yrc-nE-tfC" firstAttribute="leading" secondItem="nkm-5L-YPV" secondAttribute="trailing" constant="8" id="NmC-se-2Vf"/>
                     <constraint firstItem="nkm-5L-YPV" firstAttribute="leading" secondItem="U3q-C2-3gf" secondAttribute="trailing" constant="8" id="Ns3-hB-55j"/>
@@ -84,6 +85,7 @@
                     <constraint firstAttribute="trailing" secondItem="lq3-4f-YcC" secondAttribute="trailing" constant="7" id="iC0-Gr-goR"/>
                     <constraint firstItem="lq3-4f-YcC" firstAttribute="leading" secondItem="1XS-Gz-Yw2" secondAttribute="trailing" constant="8" id="ogy-6U-paI"/>
                     <constraint firstItem="QFp-ST-LmS" firstAttribute="leading" secondItem="U3q-C2-3gf" secondAttribute="trailing" constant="8" id="oiF-Px-Ihp"/>
+                    <constraint firstAttribute="trailing" secondItem="m5H-1t-gVD" secondAttribute="trailing" constant="7" id="r6Y-Rs-s6o"/>
                     <constraint firstItem="nkm-5L-YPV" firstAttribute="centerY" secondItem="yrc-nE-tfC" secondAttribute="centerY" id="sA6-Se-fMH"/>
                 </constraints>
             </tableViewCellContentView>
