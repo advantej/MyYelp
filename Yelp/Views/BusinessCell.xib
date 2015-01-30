@@ -35,7 +35,7 @@
                         <color key="textColor" red="0.41487136994949492" green="0.41487136994949492" blue="0.41487136994949492" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5H-1t-gVD">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5H-1t-gVD">
                         <rect key="frame" x="329" y="26" width="12" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" red="0.41487136994949492" green="0.41487136994949492" blue="0.41487136994949492" alpha="1" colorSpace="calibratedRGB"/>
@@ -71,8 +71,10 @@
                     <constraint firstItem="1XS-Gz-Yw2" firstAttribute="leading" secondItem="U3q-C2-3gf" secondAttribute="trailing" constant="8" id="3Hp-GG-ZmE"/>
                     <constraint firstItem="tnX-NG-5pW" firstAttribute="leading" secondItem="U3q-C2-3gf" secondAttribute="trailing" constant="8" id="6UI-WJ-NP2"/>
                     <constraint firstItem="U3q-C2-3gf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="8KE-wS-c5W"/>
+                    <constraint firstAttribute="trailing" secondItem="m5H-1t-gVD" secondAttribute="trailing" constant="7" id="9wQ-JP-Osi"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tnX-NG-5pW" secondAttribute="bottom" constant="8" id="DVT-oo-yjc"/>
                     <constraint firstItem="lq3-4f-YcC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="EMR-uz-fnK"/>
+                    <constraint firstItem="m5H-1t-gVD" firstAttribute="top" secondItem="lq3-4f-YcC" secondAttribute="bottom" constant="6" id="Fll-YE-MK8"/>
                     <constraint firstItem="nkm-5L-YPV" firstAttribute="top" secondItem="1XS-Gz-Yw2" secondAttribute="bottom" constant="2" id="GYP-QU-W28"/>
                     <constraint firstItem="QFp-ST-LmS" firstAttribute="top" secondItem="nkm-5L-YPV" secondAttribute="bottom" constant="5" id="H0z-nh-BXR"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="U3q-C2-3gf" secondAttribute="bottom" constant="8" id="LKJ-Zc-MMB"/>
