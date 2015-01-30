@@ -23,6 +23,10 @@
 		42FD6C6E18DC286B000BF2B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 42FD6C6C18DC286B000BF2B9 /* InfoPlist.strings */; };
 		42FD6C7018DC286B000BF2B9 /* YelpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FD6C6F18DC286B000BF2B9 /* YelpTests.m */; };
 		63E591F41F684901AF8C1C19 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEC6D18C14F46F8AF2EA320 /* libPods.a */; };
+		8B2554721A7C238100DDA2B2 /* PreferenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2554701A7C238100DDA2B2 /* PreferenceCell.m */; };
+		8B2554731A7C238100DDA2B2 /* PreferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B2554711A7C238100DDA2B2 /* PreferenceCell.xib */; };
+		8B2554771A7C452A00DDA2B2 /* PricePreferenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2554751A7C452A00DDA2B2 /* PricePreferenceCell.m */; };
+		8B2554781A7C452A00DDA2B2 /* PricePreferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B2554761A7C452A00DDA2B2 /* PricePreferenceCell.xib */; };
 		8B31306E1A796983001D4C0E /* BusinessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B31306C1A796983001D4C0E /* BusinessCell.m */; };
 		8B31306F1A796983001D4C0E /* BusinessCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B31306D1A796983001D4C0E /* BusinessCell.xib */; };
 		8B3223A01A79B1CF005E2466 /* FilterUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B32239E1A79B1CF005E2466 /* FilterUIViewController.m */; };
@@ -65,6 +69,12 @@
 		42FD6C6D18DC286B000BF2B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		42FD6C6F18DC286B000BF2B9 /* YelpTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YelpTests.m; sourceTree = "<group>"; };
 		8436EC1AAEE1439D997D29F7 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		8B25546F1A7C238100DDA2B2 /* PreferenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceCell.h; sourceTree = "<group>"; };
+		8B2554701A7C238100DDA2B2 /* PreferenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceCell.m; sourceTree = "<group>"; };
+		8B2554711A7C238100DDA2B2 /* PreferenceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferenceCell.xib; sourceTree = "<group>"; };
+		8B2554741A7C452A00DDA2B2 /* PricePreferenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PricePreferenceCell.h; sourceTree = "<group>"; };
+		8B2554751A7C452A00DDA2B2 /* PricePreferenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PricePreferenceCell.m; sourceTree = "<group>"; };
+		8B2554761A7C452A00DDA2B2 /* PricePreferenceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PricePreferenceCell.xib; sourceTree = "<group>"; };
 		8B31306B1A796983001D4C0E /* BusinessCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessCell.h; sourceTree = "<group>"; };
 		8B31306C1A796983001D4C0E /* BusinessCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessCell.m; sourceTree = "<group>"; };
 		8B31306D1A796983001D4C0E /* BusinessCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCell.xib; sourceTree = "<group>"; };
@@ -220,6 +230,12 @@
 				8B3223A21A7AE2FE005E2466 /* SwitchCell.h */,
 				8B3223A31A7AE2FE005E2466 /* SwitchCell.m */,
 				8B3223A41A7AE2FE005E2466 /* SwitchCell.xib */,
+				8B25546F1A7C238100DDA2B2 /* PreferenceCell.h */,
+				8B2554701A7C238100DDA2B2 /* PreferenceCell.m */,
+				8B2554711A7C238100DDA2B2 /* PreferenceCell.xib */,
+				8B2554741A7C452A00DDA2B2 /* PricePreferenceCell.h */,
+				8B2554751A7C452A00DDA2B2 /* PricePreferenceCell.m */,
+				8B2554761A7C452A00DDA2B2 /* PricePreferenceCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -303,6 +319,8 @@
 			files = (
 				42FD6C5518DC286B000BF2B9 /* InfoPlist.strings in Resources */,
 				8B31306F1A796983001D4C0E /* BusinessCell.xib in Resources */,
+				8B2554781A7C452A00DDA2B2 /* PricePreferenceCell.xib in Resources */,
+				8B2554731A7C238100DDA2B2 /* PreferenceCell.xib in Resources */,
 				420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */,
 				8B3223A11A79B1CF005E2466 /* FilterUIViewController.xib in Resources */,
 				42FD6C5D18DC286B000BF2B9 /* Images.xcassets in Resources */,
@@ -358,7 +376,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B2554771A7C452A00DDA2B2 /* PricePreferenceCell.m in Sources */,
 				42FD6C5B18DC286B000BF2B9 /* AppDelegate.m in Sources */,
+				8B2554721A7C238100DDA2B2 /* PreferenceCell.m in Sources */,
 				8B3223A51A7AE2FE005E2466 /* SwitchCell.m in Sources */,
 				8B3223A01A79B1CF005E2466 /* FilterUIViewController.m in Sources */,
 				42FD6C5718DC286B000BF2B9 /* main.m in Sources */,

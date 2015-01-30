@@ -85,6 +85,8 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     vc.delegate = self;
 
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    nvc.navigationBar.barTintColor = [UIColor colorWithRed:255.0 / 255.0 green:0.0 / 255.0 blue:0.0 / 255.0 alpha:1];
+    nvc.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
 
     [self presentViewController:nvc animated:YES completion:nil];
 

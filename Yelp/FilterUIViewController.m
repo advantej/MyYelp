@@ -8,14 +8,26 @@
 
 #import "FilterUIViewController.h"
 #import "SwitchCell.h"
+#import "PreferenceCell.h"
+#import "PricePreferenceCell.h"
 
 @interface FilterUIViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate>
 
 @property(nonatomic, readonly) NSDictionary *filters;
 @property(weak, nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic, strong) NSMutableArray *sectionsExpandedState;
+
 @property(nonatomic, strong) NSArray *categories;
 @property(nonatomic, strong) NSMutableSet *selectedCategories;
-@property(nonatomic, strong) NSMutableArray *sectionsExpandedState;
+
+@property(nonatomic, strong) NSArray *distances;
+@property(nonatomic, assign) NSUInteger selectedDistanceIndex;
+
+@property(nonatomic, strong) NSArray *sortByPrefs;
+@property(nonatomic, assign) NSUInteger selectedSortByPref;
+
+@property(nonatomic, strong) NSArray *mostPopularPreferences;
+@property(nonatomic, strong) NSMutableSet *selectedMostPopularPreferences;
 
 @end
 
@@ -25,10 +37,19 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 
     if (self) {
+        self.sectionsExpandedState = [[NSMutableArray alloc] initWithArray:@[@NO, @NO, @NO, @NO, @YES ]];
+
         self.selectedCategories = [NSMutableSet set];
         [self initCategories];
 
-        self.sectionsExpandedState = [[NSMutableArray alloc] initWithArray:@[@NO, @NO, @NO, @NO, @YES ]];
+        self.selectedMostPopularPreferences = [NSMutableSet set];
+        self.mostPopularPreferences = @[@"Open Now", @"Hot & New", @"Offering a Deal", @"Delivery"];
+
+        self.distances = @[@"Best Match", @"0.3 miles", @"1 mile", @"5 miles", @"20 miles"];
+        self.selectedDistanceIndex = 0;
+
+        self.sortByPrefs = @[@"Best Match", @"Distance", @"Rating", @"Most Reviewed"];
+        self.selectedSortByPref = 0;
     }
 
     return self;
@@ -40,10 +61,16 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelButton)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(onApplyButton)];
 
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.title = @"Settings";
 
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PreferenceCell" bundle:nil] forCellReuseIdentifier:@"PreferenceCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PricePreferenceCell" bundle:nil] forCellReuseIdentifier:@"PricePreferenceCell"];
 }
 
 #pragma mark - TableView delegate methods
@@ -61,18 +88,15 @@
         case 0:
                 return 1;
         case 1:
-            if (expanded)
-                return 5;
-            else
-                return 1;
+            return self.mostPopularPreferences.count;
         case 2:
             if (expanded)
-                return 5;
+                return self.distances.count;
             else
                 return 1;
         case 3:
             if (expanded)
-                return 5;
+                return self.sortByPrefs.count;
             else
                 return 1;
         case 4:
@@ -87,10 +111,11 @@
 
 - (UIView *)tableView :(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 320, 30)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
     headerView.backgroundColor = [UIColor whiteColor];
 
-    UILabel *uiLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    UILabel *uiLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 320, 40)];
+    uiLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15];
     uiLabel.textColor = [UIColor grayColor];
 
     switch (section) {
@@ -107,7 +132,7 @@
             uiLabel.text = @"Sort By";
             break;
         case 4:
-            uiLabel.text = @"General Features";
+            uiLabel.text = @"Categories";
             break;
     }
 
@@ -118,25 +143,50 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    SwitchCell *cell = nil;
+    SwitchCell *switchCell = nil;
+    PreferenceCell *preferenceCell = nil;
+    PricePreferenceCell *pricePreferenceCell = nil;
+    BOOL expanded = [self.sectionsExpandedState[(NSUInteger) indexPath.section] boolValue];
 
     switch (indexPath.section) {
         case 0:
-            break;
+            pricePreferenceCell = [tableView dequeueReusableCellWithIdentifier:@"PricePreferenceCell"];
+            return pricePreferenceCell;
         case 1:
-            break;
+            switchCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+
+            switchCell.titleLabel.text = self.mostPopularPreferences[indexPath.row];
+            switchCell.on = [self.selectedMostPopularPreferences containsObject:self.categories[indexPath.row]];
+            switchCell.delgate = self;
+
+            return switchCell;
         case 2:
-            break;
+            preferenceCell = [tableView dequeueReusableCellWithIdentifier:@"PreferenceCell"];
+            if (expanded) {
+                [preferenceCell configureWithLabel:self.distances[indexPath.row] selected:indexPath.row == self.selectedDistanceIndex];
+
+            } else {
+                [preferenceCell configureWithLabel:self.distances[self.selectedDistanceIndex] selected:NO];
+            }
+            return preferenceCell;
+
         case 3:
-            break;
+            preferenceCell = [tableView dequeueReusableCellWithIdentifier:@"PreferenceCell"];
+            if (expanded) {
+                [preferenceCell configureWithLabel:self.sortByPrefs[indexPath.row] selected:indexPath.row == self.selectedSortByPref];
+
+            } else {
+                [preferenceCell configureWithLabel:self.sortByPrefs[self.selectedSortByPref] selected:NO];
+            }
+            return preferenceCell;
         case 4:
-            cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+            switchCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
 
-            cell.titleLabel.text = self.categories[indexPath.row][@"name"];
-            cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
-            cell.delgate = self;
+            switchCell.titleLabel.text = self.categories[indexPath.row][@"name"];
+            switchCell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
+            switchCell.delgate = self;
 
-            return cell;
+            return switchCell;
     }
 
     UITableViewCell *placeHolderView = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
@@ -146,18 +196,31 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 4)
+        return;
+
     NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:(NSUInteger) indexPath.section];
     BOOL expanded = [self.sectionsExpandedState[(NSUInteger) indexPath.section] boolValue];
-    if (expanded) {
-        self.sectionsExpandedState[(NSUInteger) indexPath.section] = @NO;
-    } else {
-        self.sectionsExpandedState[(NSUInteger) indexPath.section] = @YES;
+    self.sectionsExpandedState[(NSUInteger) indexPath.section] = @(!expanded);
+
+    switch (indexPath.section) {
+        case 2:
+            if (expanded) {
+                self.selectedDistanceIndex = indexPath.row;
+            }
+            break;
+        case 3:
+            if (expanded) {
+                self.selectedSortByPref = indexPath.row;
+            }
+            break;
     }
 
-
-    // Depending on the section
-
     [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 44;
 }
 
 #pragma mark - Switch Cell Delegate
@@ -165,11 +228,21 @@
 - (void)switchCell:(SwitchCell *)switchCell didUpdateValue:(BOOL)value {
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
+    if (indexPath.section == 4) {
+        if (value) {
+            [self.selectedCategories addObject:self.categories[indexPath.row]];
+        } else {
+            [self.selectedCategories removeObject:self.categories[indexPath.row]];
+        }
+    }
 
-    if (value) {
-        [self.selectedCategories addObject:self.categories[indexPath.row]];
-    } else {
-        [self.selectedCategories removeObject:self.categories[indexPath.row]];
+    if (indexPath.section == 1) {
+        if (value) {
+            [self.selectedMostPopularPreferences addObject:self.mostPopularPreferences[indexPath.row]];
+        } else {
+            [self.selectedMostPopularPreferences removeObject:self.mostPopularPreferences[indexPath.row]];
+        }
+
     }
 
 }
@@ -203,6 +276,32 @@
 
         NSString *categoryFilter = [names componentsJoinedByString:@","];
         filters[@"category_filter"] = categoryFilter;
+    }
+
+    if (self.selectedDistanceIndex != 0) {
+        float milesMeter = 1609.34;
+        float distance = 0;
+        switch (self.selectedDistanceIndex) {
+            case 1:
+                distance = 0.3;
+                break;
+            case 2:
+                distance = 1;
+                break;
+            case 3:
+                distance = 5;
+                break;
+            case 4:
+                distance = 20;
+                break;
+        }
+
+        distance = distance * milesMeter;
+        filters[@"radius_filter"] = @(distance);
+    }
+
+    if (self.selectedSortByPref != 0) {
+        filters[@"sort"] = @(self.selectedSortByPref);
     }
 
 
