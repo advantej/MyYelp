@@ -15,6 +15,7 @@
 @property(weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic, strong) NSArray *categories;
 @property(nonatomic, strong) NSMutableSet *selectedCategories;
+@property(nonatomic, strong) NSMutableArray *sectionsExpandedState;
 
 @end
 
@@ -27,6 +28,7 @@
         self.selectedCategories = [NSMutableSet set];
         [self initCategories];
 
+        self.sectionsExpandedState = [[NSMutableArray alloc] initWithArray:@[@NO, @NO, @NO, @NO, @YES ]];
     }
 
     return self;
@@ -36,7 +38,7 @@
     [super viewDidLoad];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelButton)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(onApplyButton)];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -44,19 +46,121 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
 }
 
+#pragma mark - TableView delegate methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 5;
+}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.categories.count;
+
+    BOOL expanded = [self.sectionsExpandedState[(NSUInteger) section] boolValue];
+
+    switch (section) {
+        case 0:
+                return 1;
+        case 1:
+            if (expanded)
+                return 5;
+            else
+                return 1;
+        case 2:
+            if (expanded)
+                return 5;
+            else
+                return 1;
+        case 3:
+            if (expanded)
+                return 5;
+            else
+                return 1;
+        case 4:
+            if (expanded)
+                return self.categories.count;
+            else
+                return 5;
+        default:break;
+    }
+    return 0;
+}
+
+- (UIView *)tableView :(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 320, 30)];
+    headerView.backgroundColor = [UIColor whiteColor];
+
+    UILabel *uiLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    uiLabel.textColor = [UIColor grayColor];
+
+    switch (section) {
+        case 0:
+            uiLabel.text = @"Price";
+            break;
+        case 1:
+            uiLabel.text = @"Most Popular";
+            break;
+        case 2:
+            uiLabel.text = @"Distance";
+            break;
+        case 3:
+            uiLabel.text = @"Sort By";
+            break;
+        case 4:
+            uiLabel.text = @"General Features";
+            break;
+    }
+
+    [headerView addSubview:uiLabel];
+
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
 
-    cell.titleLabel.text = self.categories[indexPath.row][@"name"];
-    cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
-    cell.delgate = self;
+    SwitchCell *cell = nil;
 
-    return cell;
+    switch (indexPath.section) {
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+
+            cell.titleLabel.text = self.categories[indexPath.row][@"name"];
+            cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
+            cell.delgate = self;
+
+            return cell;
+    }
+
+    UITableViewCell *placeHolderView = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    placeHolderView.backgroundColor = [UIColor greenColor];
+    return placeHolderView;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:(NSUInteger) indexPath.section];
+    BOOL expanded = [self.sectionsExpandedState[(NSUInteger) indexPath.section] boolValue];
+    if (expanded) {
+        self.sectionsExpandedState[(NSUInteger) indexPath.section] = @NO;
+    } else {
+        self.sectionsExpandedState[(NSUInteger) indexPath.section] = @YES;
+    }
+
+
+    // Depending on the section
+
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark - Switch Cell Delegate
 
 - (void)switchCell:(SwitchCell *)switchCell didUpdateValue:(BOOL)value {
 
@@ -68,10 +172,11 @@
         [self.selectedCategories removeObject:self.categories[indexPath.row]];
     }
 
-
 }
 
-- (void)onFilterButton {
+#pragma mark - Private methods
+
+- (void)onApplyButton {
     [self.delegate filterViewController:self didChangeFilters:self.filters];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
