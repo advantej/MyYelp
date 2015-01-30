@@ -30,6 +30,8 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
 @property (nonatomic, strong) BusinessCell *dummyCell;
 
+- (void) fetchBusinessesWithQuery: (NSString *) query params:(NSDictionary *) params;
+
 @end
 
 @implementation MainViewController
@@ -40,19 +42,8 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     if (self) {
         // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
         self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
-        
-        [self.client searchWithTerm:@"Thai" success:^(AFHTTPRequestOperation *operation, id response) {
-            //NSLog(@"response: %@", response);
+        [self fetchBusinessesWithQuery:@"Restaurants" params:nil];
 
-            NSArray *businessesDictionaries = response[@"businesses"];
-            self.businesses = [Business businessesWithDictionaries:businessesDictionaries];
-
-            [self.tableView reloadData];
-
-
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"error: %@", [error description]);
-        }];
     }
     return self;
 }
@@ -81,6 +72,8 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 - (void)onFilterButton {
 
     FilterUIViewController *vc = [[FilterUIViewController alloc] init];
+    vc.delegate = self;
+
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
 
     [self presentViewController:nvc animated:YES completion:nil];
@@ -89,7 +82,8 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
 - (void)filterViewController:(FilterUIViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
 
-    NSLog(@"Fire a network event here");
+    NSLog(@"Filters : %@", filters);
+    [self fetchBusinessesWithQuery:@"Restaurants" params:filters];
 
 }
 
@@ -115,6 +109,24 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     return _dummyCell;
 
 }
+
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params {
+
+    [self.client searchWithTerm:query params:params success:^(AFHTTPRequestOperation *operation, id response) {
+        //NSLog(@"response: %@", response);
+
+        NSArray *businessesDictionaries = response[@"businesses"];
+        self.businesses = [Business businessesWithDictionaries:businessesDictionaries];
+
+        [self.tableView reloadData];
+
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error: %@", [error description]);
+    }];
+
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
