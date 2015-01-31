@@ -14,32 +14,35 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CUS-Vb-aV1">
+                        <rect key="frame" x="286" y="14" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="4tb-Vt-ZoK"/>
+                            <constraint firstAttribute="height" constant="15" id="5nK-1u-b00"/>
+                        </constraints>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePJ-eA-zFF">
-                        <rect key="frame" x="11" y="11" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="18" y="14" width="36" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CUS-Vb-aV1">
-                        <rect key="frame" x="288" y="9" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="4tb-Vt-ZoK"/>
-                            <constraint firstAttribute="height" constant="24" id="5nK-1u-b00"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="CUS-Vb-aV1" secondAttribute="trailing" constant="8" id="9Tg-Kw-iQu"/>
-                    <constraint firstItem="ePJ-eA-zFF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="DJJ-gh-DFw"/>
-                    <constraint firstItem="CUS-Vb-aV1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="Hnf-FE-C51"/>
-                    <constraint firstItem="ePJ-eA-zFF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="a68-Tr-ZaE"/>
+                    <constraint firstAttribute="bottom" secondItem="CUS-Vb-aV1" secondAttribute="bottom" constant="14" id="15p-rE-U8P"/>
+                    <constraint firstAttribute="bottom" secondItem="ePJ-eA-zFF" secondAttribute="bottom" constant="14" id="PDf-Lx-Qf4"/>
+                    <constraint firstItem="CUS-Vb-aV1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="cWa-ra-mEK"/>
+                    <constraint firstItem="ePJ-eA-zFF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="fbD-4J-Unb"/>
+                    <constraint firstItem="ePJ-eA-zFF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="ffs-qI-weJ"/>
+                    <constraint firstAttribute="trailing" secondItem="CUS-Vb-aV1" secondAttribute="trailing" constant="19" id="sLE-rc-H0f"/>
+                    <constraint firstItem="ePJ-eA-zFF" firstAttribute="centerY" secondItem="CUS-Vb-aV1" secondAttribute="centerY" id="wnM-lt-CgT"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="preferenceLabel" destination="ePJ-eA-zFF" id="evr-DS-zny"/>
                 <outlet property="selectedImage" destination="CUS-Vb-aV1" id="Wba-tp-P71"/>
             </connections>
-            <point key="canvasLocation" x="505" y="522"/>
+            <point key="canvasLocation" x="507" y="528"/>
         </tableViewCell>
     </objects>
 </document>
