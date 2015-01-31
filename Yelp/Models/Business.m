@@ -33,6 +33,9 @@
         float milesPerMeter = 0.000621371;
         self.distance = [dictionary[@"distance"] integerValue] * milesPerMeter;
 
+        self.lat = [[dictionary valueForKeyPath:@"location.coordinate.latitude"] floatValue];
+        self.lng = [[dictionary valueForKeyPath:@"location.coordinate.longitude"] floatValue];
+
     }
 
     return self;

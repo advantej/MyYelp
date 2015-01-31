@@ -22,8 +22,7 @@ NSString * const kYelpConsumerSecret = @"7zJYu2HH3pwoBzhC2jzYc4REsz0";
 NSString * const kYelpToken = @"BGwL_k-sXGr1vru5ZjmzUKOGuhqEiNoB";
 NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, FilterUIViewControllerDelegate, UISearchBarDelegate>
-
+@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, FilterUIViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSArray *businesses;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -32,6 +31,7 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 @property (nonatomic, strong) UISearchBar *searchBar;
 
 - (void) fetchBusinessesWithQuery: (NSString *) query params:(NSDictionary *) params;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @end
 
@@ -58,10 +58,12 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
 
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 
+    [self.mapView setHidden:YES];
+
     self.title = @"Yelp";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(onSearchButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(onMapButton)];
 
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
@@ -72,9 +74,32 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     self.navigationItem.titleView = self.searchBar;
 
     self.searchBar.delegate = self;
+    self.mapView.delegate = self;
 }
 
-- (void)onSearchButton {
+- (void)onMapButton {
+
+    BOOL switchToMapView = [self.mapView isHidden];
+
+    if (switchToMapView) {
+        self.navigationItem.rightBarButtonItem.title = @"List";
+        [self.tableView setHidden:YES];
+        [self.mapView setHidden:NO];
+
+        [self updateMapWithValues];
+    } else {
+        self.navigationItem.rightBarButtonItem.title = @"Map";
+        [self.tableView setHidden:NO];
+        [self.mapView setHidden:YES];
+
+        [self.tableView reloadData];
+    }
+
+}
+
+#pragma mark - SearchBar delegate methods
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self fetchBusinessesWithQuery:self.searchBar.text params:nil];
     [self.searchBar resignFirstResponder];
 }
@@ -97,6 +122,12 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     NSLog(@"Filters : %@", filters);
     [self fetchBusinessesWithQuery:@"Restaurants" params:filters];
 
+}
+
+#pragma mark - TableView delegate methods
+
+- (void)scrollViewDidScroll :(UIScrollView *)scrollView {
+    [self.searchBar resignFirstResponder];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -130,7 +161,10 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
         NSArray *businessesDictionaries = response[@"businesses"];
         self.businesses = [Business businessesWithDictionaries:businessesDictionaries];
 
-        [self.tableView reloadData];
+        if ([self.tableView isHidden])
+            [self updateMapWithValues];
+        else
+            [self.tableView reloadData];
 
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -163,5 +197,39 @@ NSString * const kYelpTokenSecret = @"Utpn9xUj9Y8uVYwDxh2rG2xlWvk";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - MapView delegate methods
+
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    [self.searchBar resignFirstResponder];
+}
+
+#pragma mark - private methods
+
+- (void) updateMapWithValues {
+
+    [self.mapView removeAnnotations:self.mapView.annotations];
+
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(37.774866,-122.394556);
+
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 2000, 2000);
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+
+
+    for (Business *business in self.businesses) {
+        MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+
+        point.coordinate = CLLocationCoordinate2DMake(business.lat, business.lng);
+        point.title = business.businessName;
+        point.subtitle = business.categories;
+
+        [self.mapView addAnnotation:point];
+    }
+}
+
 
 @end
