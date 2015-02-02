@@ -2,7 +2,7 @@
 
 This is a Yelp search app using the [Yelp API](http://developer.rottentomatoes.com/docs/read/JSON). 
 
-Time spent: <>
+Time spent: 10 hours
 
 #Features
 ### Required:
@@ -29,7 +29,7 @@ Time spent: <>
   * [ ] Implement the restaurant detail page.
 
 Notes:
-
+Auto layouts is awesome, but it sucks.
 
 
 ![Video Walkthrough](yelp.gif)
