@@ -14,13 +14,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CUS-Vb-aV1">
-                        <rect key="frame" x="366" y="14" width="15" height="15"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="15" id="6ux-JD-LkY"/>
-                            <constraint firstAttribute="height" constant="15" id="XSO-Va-wK0"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePJ-eA-zFF">
                         <rect key="frame" x="18" y="13" width="36" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -29,15 +22,12 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="centerY" secondItem="CUS-Vb-aV1" secondAttribute="centerY" id="1BU-Ce-lpj"/>
                     <constraint firstAttribute="centerY" secondItem="ePJ-eA-zFF" secondAttribute="centerY" id="Gdl-iV-Cby"/>
-                    <constraint firstAttribute="trailing" secondItem="CUS-Vb-aV1" secondAttribute="trailing" constant="19" id="cnB-P1-nyV"/>
                     <constraint firstItem="ePJ-eA-zFF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="x2L-ff-Gne"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="preferenceLabel" destination="ePJ-eA-zFF" id="evr-DS-zny"/>
-                <outlet property="selectedImage" destination="CUS-Vb-aV1" id="Wba-tp-P71"/>
             </connections>
             <point key="canvasLocation" x="507" y="527"/>
         </tableViewCell>

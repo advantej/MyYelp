@@ -24,7 +24,7 @@
 
 - (void)configureWithLabel:(NSString *)labelText selected:(BOOL)selected {
     self.preferenceLabel.text = labelText;
-    self.selectedImage.image = selected ? [UIImage imageNamed:@"select"] : nil;
+    self.accessoryType = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
 
 
