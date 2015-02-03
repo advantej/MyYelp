@@ -11,7 +11,7 @@
 #import "PreferenceCell.h"
 #import "PricePreferenceCell.h"
 
-@interface FilterUIViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate>
+@interface FilterUIViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, PricePreferenceCellDelegate>
 
 @property(nonatomic, readonly) NSDictionary *filters;
 @property(weak, nonatomic) IBOutlet UITableView *tableView;
@@ -29,6 +29,8 @@
 @property(nonatomic, strong) NSArray *mostPopularPreferences;
 @property(nonatomic, strong) NSMutableSet *selectedMostPopularPreferences;
 
+@property(nonatomic, strong) NSMutableOrderedSet *selectedPricePreferences;
+
 @end
 
 @implementation FilterUIViewController
@@ -41,6 +43,8 @@
 
         self.selectedCategories = [NSMutableSet set];
         [self initCategories];
+
+        self.selectedPricePreferences = [[NSMutableOrderedSet alloc] init];
 
         self.selectedMostPopularPreferences = [NSMutableSet set];
         self.mostPopularPreferences = @[@"Open Now", @"Hot & New", @"Offering a Deal", @"Delivery"];
@@ -151,6 +155,7 @@
     switch (indexPath.section) {
         case 0:
             pricePreferenceCell = [tableView dequeueReusableCellWithIdentifier:@"PricePreferenceCell"];
+            pricePreferenceCell.delgate = self;
             return pricePreferenceCell;
         case 1:
             switchCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
@@ -247,6 +252,23 @@
 
 }
 
+#pragma mark - Price Preference Delegate
+
+- (void)pricePreferenceChanged:(NSOrderedSet *)orderedSet {
+
+    self.selectedPricePreferences = [orderedSet mutableCopy];
+
+    if (orderedSet.count > 0) {
+        for (int i = 0; i < orderedSet.count; i++) {
+            NSInteger index = [[orderedSet objectAtIndex:i] integerValue];
+            NSLog(@"Selected index : %d ", index);
+        }
+    }
+    if (orderedSet.count == 0) {
+        NSLog(@"No Selected indexes ");
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)onApplyButton {
@@ -304,6 +326,13 @@
         filters[@"sort"] = @(self.selectedSortByPref);
     }
 
+    if (self.selectedPricePreferences.count > 0) {
+        for (int i = 0; i < self.selectedPricePreferences.count; i++) {
+            NSInteger index = [[self.selectedPricePreferences objectAtIndex:i] integerValue];
+            NSLog(@"Selected index : %d ", index);
+            //TODO set the price filter here (can't find it on yelp api)
+        }
+    }
 
     return filters;
 }

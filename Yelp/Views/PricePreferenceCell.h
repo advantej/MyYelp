@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PricePreferenceCellDelegate <NSObject>
+
+- (void) pricePreferenceChanged:(NSOrderedSet *) orderedSet;
+
+@end
+
 @interface PricePreferenceCell : UITableViewCell
+
+@property (nonatomic, weak) id<PricePreferenceCellDelegate> delgate;
 
 @end
