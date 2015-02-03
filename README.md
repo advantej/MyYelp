@@ -30,6 +30,7 @@ Time spent: 10 hours
 
 Notes:
 Auto layouts is awesome, but it sucks.
+Not all filters are propogated to the api. E.g. I couldn't find the price filter in the api. Only the categories, distance and sort by works. However, the values for price filter are propogated to the ViewController and can easily be converted to api parameters.
 
 
 ![Video Walkthrough](yelp.gif)
